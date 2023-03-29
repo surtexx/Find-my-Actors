@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block title %}Index{% endblock %} 
+
+{% block content %}
+    <div class="row">
+        {% for actor in actors %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    {% if actor.image %}
+                    <img src="{{ url_for('static', filename='images/' + actor.image) }}" class="card-img-top" alt="{{ actor.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ actor.name }}</h5>
+                        <p class="card-text">{{ actor.description }}</p>
+                        <a href="{{ url_for('auth.actor', actor_id=actor.id) }}" class="btn btn-primary">View actor</a>
+                        <form method="POST" action="{{ url_for('auth.delete_actor', actor_id=actor.id) }}" style="display: inline-block;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

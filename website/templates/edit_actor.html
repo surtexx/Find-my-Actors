@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit Actor</h1>
+    <form action="{{ url_for('views.edit_actor', actor_id=actor.id) }}" method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" value="{{ actor.name }}" required>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" rows="5" required>{{ actor.description }}</textarea>
+
+        <label for="image">Image:</label>
+        <input type="file" name="image" id="image">
+
+        <img src="{{ url_for('static', filename='images/' + actor.image) }}" alt="Actor Image" style="max-width: 200px; max-height: 200px;">
+        
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} 
+    {% block content %}
+    <br>
+    <h1>Welcome to our Face Recognition App</h1>
+
+    <br>
+
+
+    <h4>For using our app upload a photo with your favorite actor and find out who is in the picture.</h4>
+    <br>
+
+    {% if user.is_authenticated %}
+
+    <h4>Hello {{ user.first_name }} {{user.last_name}}. Please upload the picture below</h4>
+    <br>
+    <button type="submit" class="btn btn-primary">Upload</button>
+
+    {% else %}
+
+    <h4>Please login or sign up to use our app.</h4>
+
+    <div style="display: inline-block;">
+        <a href="/sign-up.html" style="margin-right: 10px;">Sign Up</a>
+
+        <a href="/login.html">Login</a>
+    </div>
+    
+    {% endif %}
+
+    {% endblock %}
+
+

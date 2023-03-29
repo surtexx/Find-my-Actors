@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %} {{ actor.name }}{% endblock %} 
+
+{% block content %}
+    <div class="actor">
+        <div class="actor-image">
+            <img src="{{ url_for('static', filename='images/' + actor.image) }}" alt="{{ actor.name }}">
+        </div>
+        <div class="actor-info">
+            <h2>{{ actor.name }}</h2>
+            <p>{{ actor.description }}</p>
+        </div>
+    </div>
+{% endblock %}
