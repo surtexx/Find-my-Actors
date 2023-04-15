@@ -10,7 +10,7 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ actor.name }}</h5>
-                        <p class="card-text">{{ actor.description }}</p>
+                        <p class="card-text">{{ actor.description[0:140] }}...</p>
                         <a href="{{ url_for('auth.actor', actor_id=actor.id) }}" class="btn btn-primary">View actor</a>
                         <form method="POST" action="{{ url_for('auth.delete_actor', actor_id=actor.id) }}" style="display: inline-block;">
                             <button type="submit" class="btn btn-danger">Delete</button>
