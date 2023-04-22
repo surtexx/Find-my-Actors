@@ -1,13 +1,48 @@
-{% extends "base.html" %}{% block title %} {{ actor.name }}{% endblock %} 
+{% extends "base.html" %}
+
+{% block title %}{{ actor.name }}{% endblock %}
+
+{% block head %}
+  <style>
+    body {
+      background-color: #eaecee;
+    }
+    .container {
+      margin-top: 2rem;
+      background-color: #ffffff;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+    .actor-name {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #343a40;
+    }
+    .actor-description {
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+    .actor-image {
+      margin-bottom: 1rem;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
-    <div class="actor">
-        <div class="actor-image">
-            <img src="{{ url_for('static', filename='images/' + actor.image) }}" alt="{{ actor.name }}">
-        </div>
-        <div class="actor-info">
-            <h2>{{ actor.name }}</h2>
-            <p>{{ actor.description }}</p>
-        </div>
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-4">
+        <img src="{{ url_for('static', filename='images/' + actor.image) }}" alt="{{ actor.name }}" class="img-fluid actor-image">
+      </div>
+      <div class="col-md-8">
+        <h2 class="actor-name">{{ actor.name }}</h2>
+        <p class="actor-description">{{ actor.description }}</p>
+      </div>
     </div>
+  </div>
 {% endblock %}

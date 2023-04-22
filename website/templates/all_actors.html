@@ -1,6 +1,26 @@
 {% extends "base.html" %}{% block title %}Index{% endblock %} 
 
 {% block content %}
+    <head>
+        <style>
+            .container {
+                height: 100%; /* set a fixed height to the container */
+                overflow-y: scroll; /* enable vertical scrolling */
+            }
+            ::-webkit-scrollbar {
+            width: 8px;
+            background-color: #F5F5F5;
+            }
+
+            ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: #D4D4D4;
+            }
+            .card{
+                background-color: rgb(224, 224, 231);
+            }
+        </style>
+    </head>
     <div class="row">
         {% for actor in actors %}
             <div class="col-md-4">
