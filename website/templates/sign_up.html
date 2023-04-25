@@ -1,3 +1,50 @@
+<style>
+    form {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    h3 {
+        font-size: 36px;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    label {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    button {
+        font-size: 24px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        display: block;
+        margin: 0 auto;
+    }
+
+    button:hover {
+        background-color: #0062cc;
+    }
+</style>
+
+
 {% extends "base.html" %} {% block title %}Sign Up{% endblock %} 
     {% block content %}
         <form method="POST">
