@@ -51,7 +51,19 @@
     <h4>For using our app upload a photo with your favorite actor and find out who is in the picture.</h4>
     {% if user.is_authenticated %}
     <h4>Hello {{ user.first_name }} {{user.last_name}}. Please upload the picture below</h4>
-    <button type="submit" class="btn btn-primary">Upload</button>
+    
+    <form action="{{ url_for('auth.upload_image') }}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="image">Upload Image</label>
+            <input type="file" class="form-control-file" id="image" name="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+
+    {% if image_file %}   
+        <img src="{{ url_for('static', filename='images/' + image_file.filename) }}" class="card-img-top" alt="uploaded image">
+        {{prediction}}
+    {% endif %}
+     
     {% else %}
     <h4>Please login or sign up to use our app.</h4>
     <div class="signup-login-links">

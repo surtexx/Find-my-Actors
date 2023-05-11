@@ -5,6 +5,7 @@ from .models import Actor
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import current_app
+from fetch_images import FMA
 
 from werkzeug.utils import secure_filename
 import os
@@ -133,3 +134,17 @@ def delete_actor(actor_id):
     db.session.commit()
     flash('Actor deleted!', category='success')
     return redirect(url_for('auth.all_actors', user=current_user))
+
+
+
+@auth.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    image_file = request.files.get('image')
+
+    filename = secure_filename(image_file.filename)
+    image_path = os.path.join(current_app.root_path, 'static/images', filename)
+    image_file.save(image_path)
+    model_ai = FMA()
+    prediction = model_ai.predict(image_path)
+    return render_template("home.html", user=current_user, image_file=image_file, prediction = prediction)
