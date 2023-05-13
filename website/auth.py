@@ -5,10 +5,12 @@ from .models import Actor
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import current_app
-from fetch_images import FMA
-
+from FMA import FMA
+from io import BytesIO
 from werkzeug.utils import secure_filename
 import os
+from werkzeug.datastructures import FileStorage
+from PIL import Image
 
 auth = Blueprint('auth', __name__)
 
@@ -141,10 +143,21 @@ def delete_actor(actor_id):
 @login_required
 def upload_image():
     image_file = request.files.get('image')
-
     filename = secure_filename(image_file.filename)
-    image_path = os.path.join(current_app.root_path, 'static/images', filename)
+    image_path = os.path.join(current_app.root_path, 'static', 'images', filename)
     image_file.save(image_path)
+
     model_ai = FMA()
-    prediction = model_ai.predict(image_path)
-    return render_template("home.html", user=current_user, image_file=image_file, prediction = prediction)
+    prediction_image = Image.fromarray(model_ai.predict(image_path))
+    prediction_image_filename = filename.split(".")[0] + "_prediction." + filename.split(".")[1]
+    prediction_image_path = os.path.join(current_app.root_path, 'static', 'images',
+                                                      prediction_image_filename)
+    image_buffer = BytesIO()
+    prediction_image.save(image_buffer, format="JPEG")
+    image_buffer.seek(0)
+    prediction_image_content = image_buffer.read()
+
+    image_file_prediction = FileStorage(stream=BytesIO(prediction_image_content), filename=prediction_image_filename)
+    image_file_prediction.save(prediction_image_path)
+
+    return render_template("home.html", user=current_user, image_file=image_file_prediction)
