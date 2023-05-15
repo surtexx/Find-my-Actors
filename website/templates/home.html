@@ -11,6 +11,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        height: 50%; 
+        overflow-y: scroll;
+
     }
 
     h1 {
@@ -27,7 +30,7 @@
 
     .btn-primary {
         font-size: 30px;
-        margin: 0 auto;
+        margin: 0 20;
         display: block;
         text-align: center;
     }
@@ -48,6 +51,8 @@
 {% block content %}
 <div class="content">
     <h1>Welcome to our Face Recognition App</h1>
+    <br>
+    <br>
     <h4>For using our app upload a photo with your favorite actor and find out who is in the picture.</h4>
     {% if user.is_authenticated %}
     <h4>Hello {{ user.first_name }} {{user.last_name}}. Please upload the picture below</h4>
@@ -65,10 +70,14 @@
     {% endif %}
      
     {% else %}
-    <h4>Please login or sign up to use our app.</h4>
+    <br>
+
+
+    <h5 style="font-style: italic;">Please login or sign up to use our app.</h5>
+
     <div class="signup-login-links">
-        <a href="/sign-up.html" class="btn btn-primary">Sign Up</a>
-        <a href="/login.html" class="btn btn-primary">Login</a>
+        <a href="/login" class="btn btn-primary">Login</a>
+        <a href="/sign-up" class="btn btn-primary">Sign Up</a>
     </div>
     {% endif %}
 </div>
