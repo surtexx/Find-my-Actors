@@ -66,7 +66,7 @@
 
     {% if image_file %}   
         <img src="{{ url_for('static', filename='images/' + image_file.filename) }}" class="card-img-top" alt="uploaded image">
-        {{prediction}}
+        <div>{{prediction}}</div>
     {% endif %}
      
     {% else %}

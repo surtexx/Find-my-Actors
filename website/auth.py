@@ -2,6 +2,8 @@ from . import db
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from .models import Actor
+from .models import Submission
+from .models import Note
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import current_app
@@ -11,6 +13,10 @@ from werkzeug.utils import secure_filename
 import os
 from werkzeug.datastructures import FileStorage
 from PIL import Image
+
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 auth = Blueprint('auth', __name__)
 
@@ -77,7 +83,8 @@ def sign_up():
 @auth.route('/actors/<int:actor_id>')
 def actor(actor_id):
     actor = Actor.query.get(actor_id)
-    return render_template("actor.html", actor=actor, user=current_user)
+    uploads = Submission.query.filter_by(actorid=actor_id).all()
+    return render_template("actor.html", actor=actor, user=current_user, uploads=uploads, os=os)
 
 UPLOAD_FOLDER = 'static/images'
 
@@ -120,7 +127,16 @@ def edit_actor(actor_id):
     if request.method == 'POST':
         actor.name = request.form.get('name')
         actor.description = request.form.get('description')
-        actor.image = request.form.get('image')
+
+        # Check if a new image file was uploaded
+        if 'image' in request.files:
+            image = request.files['image']
+            if image.filename != '':
+                # Save image to the static folder
+                filename = secure_filename(image.filename)
+                image_path = os.path.join(current_app.root_path, 'static/images', filename)
+                image.save(image_path)
+                actor.image = filename
 
         db.session.commit()
         flash('Actor updated!', category='success')
@@ -138,7 +154,6 @@ def delete_actor(actor_id):
     return redirect(url_for('auth.all_actors', user=current_user))
 
 
-
 @auth.route('/upload_image', methods=['POST'])
 @login_required
 def upload_image():
@@ -148,7 +163,8 @@ def upload_image():
     image_file.save(image_path)
 
     model_ai = FMA()
-    prediction_image = Image.fromarray(model_ai.predict(image_path))
+    prediction_image = Image.fromarray(model_ai.predict(image_path)[0])
+    actors_found = model_ai.predict(image_path)[1]
     prediction_image_filename = filename.split(".")[0] + "_prediction." + filename.split(".")[1]
     prediction_image_path = os.path.join(current_app.root_path, 'static', 'images',
                                                       prediction_image_filename)
@@ -160,4 +176,29 @@ def upload_image():
     image_file_prediction = FileStorage(stream=BytesIO(prediction_image_content), filename=prediction_image_filename)
     image_file_prediction.save(prediction_image_path)
 
-    return render_template("home.html", user=current_user, image_file=image_file_prediction)
+    found_actor = False
+    if(len(actors_found) > 1):
+        flash('Too many faces found. Upload a picture with only one actor!', category='success')
+
+    else:
+        all_actors = Actor.query.all()
+        for actor in all_actors:
+
+            new_actor = actor.name.lower()
+
+            if new_actor==actors_found[0].lower():
+                id_actor = Actor.query.filter_by(name=actor.name).first().id
+                new_submission = Submission(image=filename, actorid=id_actor)
+                print(new_submission.id, new_submission.image, new_submission.actorid)
+                db.session.add(new_submission)
+                db.session.commit()
+                subm = Submission.query.filter_by(image=filename).first()
+                print(subm.id, subm.image, subm.actorid)
+                found_actor = True
+                flash('Actor found!', category='success')
+
+        if not found_actor:
+            flash('Actor not found!', category='error')
+
+
+    return render_template("home.html", user=current_user, image_file=image_file_prediction, prediction= actors_found)

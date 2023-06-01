@@ -8,8 +8,7 @@ import uuid
 import sys
 import albumentations as alb
 import cv2
-import tensorflow as tf
-import numpy as np
+
 
 all_labels = {}
 

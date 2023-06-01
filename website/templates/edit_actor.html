@@ -1,19 +1,24 @@
 {% extends "base.html" %}
+{% block title %}Edit Actor{% endblock %}
 
 {% block content %}
-    <h1>Edit Actor</h1>
-    <form action="{{ url_for('views.edit_actor', actor_id=actor.id) }}" method="post" enctype="multipart/form-data">
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" value="{{ actor.name }}" required>
+    <h1 class="title">Edit Actor</h1>
+    <form action="{{ url_for('auth.edit_actor', actor_id=actor.id) }}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" class="form-control" value="{{ actor.name }}" required>
+        </div>
 
-        <label for="description">Description:</label>
-        <textarea name="description" id="description" rows="5" required>{{ actor.description }}</textarea>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" rows="5" class="form-control" required>{{ actor.description }}</textarea>
+        </div>
 
-        <label for="image">Image:</label>
-        <input type="file" name="image" id="image">
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" class="form-control-file" name="image" id="image">
+        </div>
 
-        <img src="{{ url_for('static', filename='images/' + actor.image) }}" alt="Actor Image" style="max-width: 200px; max-height: 200px;">
-        
-        <input type="submit" value="Update">
+        <input type="submit" value="Update" class="btn btn-primary">
     </form>
 {% endblock %}

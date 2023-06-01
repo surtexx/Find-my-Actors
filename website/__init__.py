@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 
 db = SQLAlchemy()
-DB_NAME = "database.db"
+DB_NAME = "DataBase.db"
 
 
 

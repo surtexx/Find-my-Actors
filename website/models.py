@@ -16,3 +16,15 @@ class Actor(db.Model):
     name = db.Column(db.String(150), unique=True)
     description = db.Column(db.String(500))
     image = db.Column(db.String(150))
+
+
+class Submission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(150))
+    actorid = db.Column(db.Integer, db.ForeignKey('actor.id'))
+
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150))
+    content = db.Column(db.String(500))
+

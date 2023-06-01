@@ -51,13 +51,20 @@
     <div class="row d-flex justify-content-center">
       <div class="col-md-4">
         <div class="actor-info">
-          <img src="{{ url_for('static', filename='images/' + actor.image) }}" alt="{{ actor.name }}" class="img-fluid actor-image">
+          <img src="{{ url_for('static', filename='images/' + actor.image) if actor.image else '' }}" alt="{{ actor.name }}" class="img-fluid actor-image">
           <h2 class="actor-name">{{ actor.name }}</h2>
         </div>
       </div>
       <div class="col-md-8">
         <p class="actor-description">{{ actor.description }}</p>
       </div>
+
+        <div>
+            <h2>Last 10 pictures uploaded by other users:</h2>
+            {% for upload in uploads[:10] %}
+                <img src="{{ url_for('static', filename='images/' + upload.image) }}" alt="Actor Image">
+            {% endfor %}
+        </div>
     </div>
   </div>
 {% endblock %}

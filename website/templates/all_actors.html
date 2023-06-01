@@ -37,6 +37,8 @@
                         <form method="POST" action="{{ url_for('auth.delete_actor', actor_id=actor.id) }}" style="display: inline-block;">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                        <a href="{{ url_for('auth.edit_actor', actor_id=actor.id) }}" class="btn btn-warning">Edit actor</a>
+
                     </div>
                 </div>
             </div>
