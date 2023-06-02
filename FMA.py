@@ -16,7 +16,7 @@ class FMA:
         self.labels = json.load(open("fetch_images/labels.json"))
 
     def predict(self, file):
-        if 'image' in magic.from_file(file, mime=True):
+        if 'image' in magic.from_file(file, mime=True) and 'gif' not in str(magic.from_file(file, mime=True)).lower():
             img = face_recognition.load_image_file(file)
             gray_img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
             faces = face_recognition.face_locations(img)
@@ -29,9 +29,11 @@ class FMA:
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 name = self.labels[str(self.recognizer.predict(roi_gray)[0])]
                 names.append(name)
-                color = (5, 5, 5)
-                stroke = 2
-                cv2.putText(img, name, (left, top+10), font, 1, color, stroke, cv2.LINE_AA)
+                stroke_color = (5, 5, 5)
+                color = (240, 240, 240)
+                stroke = 4
+                cv2.putText(img, name, (left, top-10), font, 1, stroke_color, stroke, cv2.LINE_AA)
+                cv2.putText(img, name, (left, top-10), font, 1, color, 2, cv2.LINE_AA)
             return cv2.resize(img, (360, 360)), names
-        elif 'video' in magic.from_file(file, mime=True):
-            pass    # TODO: video face recognition
+        else:
+            return None, []

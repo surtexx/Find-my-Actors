@@ -163,7 +163,8 @@ def upload_image():
     image_file.save(image_path)
 
     model_ai = FMA()
-    prediction_image = Image.fromarray(model_ai.predict(image_path)[0])
+    prediction_image, actors_found = model_ai.predict(image_path)
+    prediction_image = Image.fromarray(prediction_image)
     actors_found = model_ai.predict(image_path)[1]
     prediction_image_filename = filename.split(".")[0] + "_prediction." + filename.split(".")[1]
     prediction_image_path = os.path.join(current_app.root_path, 'static', 'images',
@@ -176,29 +177,20 @@ def upload_image():
     image_file_prediction = FileStorage(stream=BytesIO(prediction_image_content), filename=prediction_image_filename)
     image_file_prediction.save(prediction_image_path)
 
-    found_actor = False
-    if(len(actors_found) > 1):
-        flash('Too many faces found. Upload a picture with only one actor!', category='success')
-
-    else:
+    if len(actors_found) == 0:
+        flash('Actor not found!', category='error')
+    for actor_found in set(actors_found):
         all_actors = Actor.query.all()
         for actor in all_actors:
 
             new_actor = actor.name.lower()
 
-            if new_actor==actors_found[0].lower():
+            if new_actor == actor_found.lower():
                 id_actor = Actor.query.filter_by(name=actor.name).first().id
                 new_submission = Submission(image=filename, actorid=id_actor)
-                print(new_submission.id, new_submission.image, new_submission.actorid)
                 db.session.add(new_submission)
                 db.session.commit()
                 subm = Submission.query.filter_by(image=filename).first()
-                print(subm.id, subm.image, subm.actorid)
-                found_actor = True
                 flash('Actor found!', category='success')
-
-        if not found_actor:
-            flash('Actor not found!', category='error')
-
 
     return render_template("home.html", user=current_user, image_file=image_file_prediction, prediction= actors_found)
