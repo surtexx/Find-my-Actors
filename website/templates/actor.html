@@ -1,9 +1,9 @@
 <style>
   .container-actor {
     height: 80%;
-    overflow-y: scroll;
     margin-top: 2rem;
     border-radius: 10px;
+    overflow-y: scroll;
     background-color: #eeeeee;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     padding: 2rem;
@@ -12,7 +12,9 @@
   .actor-description {
     font-size: 1.2rem;
     color: #000000;
-    padding-top: 3rem;
+    padding-top: 1rem;
+    overflow-y: scroll;
+    max-height: 300px;
   }
   .actor-image {
     max-width: 100%;
@@ -40,7 +42,46 @@
   white-space: normal;
 }
 
+#image-carousel {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.splide__track{
+  display: flex;
+  overflow: hidden;
+}
+
+.splide__slide {
+  display: inline-block;
+  vertical-align: top;
+  width: auto;
+  margin-right: 10px; 
+}
+
+.splide__list {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  margin: 0;
+}
+
+.splide__slide img {
+  width: 300px;
+  height: 350px;
+  object-fit: cover;
+  padding: 20px;
+}
+
 </style>
+
+
 
 {% extends "base.html" %}
 
@@ -56,15 +97,28 @@
         </div>
       </div>
       <div class="col-md-8">
+        <h4>Actor Description:</h4>
         <p class="actor-description">{{ actor.description }}</p>
       </div>
 
-        <div>
-            <h2>Last 10 pictures uploaded by other users:</h2>
-            {% for upload in uploads[:10] %}
+      <h2>Last 10 pictures uploaded by other users:</h2>
+        <section id="image-carousel" class="splide" aria-label="Beautiful Images">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {% for upload in uploads[:10] %}
+              <div class="splide__slide">
                 <img src="{{ url_for('static', filename='images/' + upload.image) }}" alt="Actor Image">
-            {% endfor %}
-        </div>
+              </div>
+              {% endfor %}
+              <ul>
+          </div>
+        </section>
+      
+      
+      
     </div>
   </div>
+
+  
 {% endblock %}
+

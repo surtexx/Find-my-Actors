@@ -13,7 +13,12 @@
         align-items: center;
         height: 70%; 
         overflow-y: scroll;
-
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
     }
 
     h1 {
@@ -30,7 +35,6 @@
 
     .btn-primary {
         font-size: 30px;
-        margin: 0 20;
         display: block;
         text-align: center;
     }
@@ -40,6 +44,11 @@
         margin-top: 20px;
     }
 
+    .prediction{
+        font-size: 30px;
+        text-align: center;
+        margin: 20px;
+    }
 
 </style>
 
@@ -58,15 +67,16 @@
     <h4>Hello {{ user.first_name }} {{user.last_name}}. Please upload the picture below</h4>
     
     <form action="{{ url_for('auth.upload_image') }}" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="image">Upload Image</label>
-            <input type="file" class="form-control-file" id="image" name="image">
+        <div class="form-actions">
+            <input type="file" class="form-control-file" name="image" id="image" required>
         </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
-
+        <div class="form-actions">
+            <input type="submit" value="Upload" class="btn btn-primary">
+        </div>
+    </form>
     {% if image_file %}   
+        <div class="prediction">{{ prediction[0].title() }}</div>
         <img src="{{ url_for('static', filename='images/' + image_file.filename) }}" class="card-img-top" alt="uploaded image">
-        <div>{{prediction}}</div>
     {% endif %}
      
     {% else %}
