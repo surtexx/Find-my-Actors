@@ -23,8 +23,5 @@ class Submission(db.Model):
     image = db.Column(db.String(150))
     actorid = db.Column(db.Integer, db.ForeignKey('actor.id'))
 
-class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(150))
-    content = db.Column(db.String(500))
+
 
