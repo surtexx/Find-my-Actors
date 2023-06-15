@@ -1,3 +1,5 @@
+from sqlalchemy import desc
+
 from . import db
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
@@ -12,6 +14,7 @@ from werkzeug.utils import secure_filename
 import os
 from werkzeug.datastructures import FileStorage
 from PIL import Image
+import datetime
 
 
 auth = Blueprint('auth', __name__)
@@ -30,14 +33,22 @@ def filter_actors():
     if query:
         actors = actors.filter(Actor.name.ilike(f"%{query}%"))
 
+    actors_submissions = []
+
     if sort_asc:
         actors = actors.order_by(Actor.name.asc())
+        actors = actors.all()
+
     elif sort_desc:
         actors = actors.order_by(Actor.name.desc())
-    elif sort_submissions:
-        actors = actors.order_by(Actor.get_submission_count().desc())
+        actors = actors.all()
 
-    actors = actors.all()
+    elif sort_submissions:
+        for actor in actors:
+            actors_submissions.append((actor, actor.get_submission_count()))
+            actors_submissions.sort(key=lambda x: x[1], reverse=True)
+
+        actors = [act for act, sub in actors_submissions]
 
     return render_template('all_actors.html', actors = actors, sort_asc = sort_asc, sort_desc = sort_desc,
                            sort_submissions = sort_submissions, user = current_user, os = os)
@@ -189,8 +200,10 @@ def upload_image():
 
             if actor:
 
+                date_time = datetime.datetime.now().strftime('%d-%m-%y %H:%M')
+
                 # if the actor found exists in the database, add the submission to the database
-                new_submission = Submission(image=filename, actorid=new_actor.id)
+                new_submission = Submission(image = filename, actorid = new_actor.id, userid = current_user.id, datetime = date_time)
                 db.session.add(new_submission)
                 db.session.commit()
                 flash('Actor found!', category='success')
