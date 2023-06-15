@@ -148,13 +148,14 @@ def upload_image():
         flash('Actor not found!', category='error')
     else:
 
-
         for actor_found in set(actors_found):
-            # get the actor with the name provided
+
+            # check if the actor found exists in the database
             new_actor = Actor.query.filter(Actor.name.ilike(actor_found)).first()
 
             if actor:
-                # add the submission to the database
+
+                # if the actor found exists in the database, add the submission to the database
                 new_submission = Submission(image=filename, actorid=new_actor.id)
                 db.session.add(new_submission)
                 db.session.commit()
