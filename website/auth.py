@@ -13,9 +13,6 @@ import os
 from werkzeug.datastructures import FileStorage
 from PIL import Image
 
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
 auth = Blueprint('auth', __name__)
 
@@ -23,17 +20,27 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+
+        # get email and password from the form
         email = request.form.get('email')
         password = request.form.get('password')
 
+        # check if the user with the email provided exists
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
+
+                # if the password is correct, log the user in
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
+
             else:
+
+                # if the password is incorrect, show an error message
                 flash('Incorrect password, try again.', category='error')
         else:
+
+            # if the user doesn't exist, show an error message
             flash('Email does not exist.', category='error')
     return render_template("login.html", user=current_user)
 
@@ -41,20 +48,27 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+
+    # log the user out
     logout_user()
     return redirect (url_for('auth.login'))
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
+
+        # get email, first name, last name, password1 and password2 from the form
         email = request.form.get('email')
         first_name = request.form.get('firstName')
         last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+        # check if the user with the email provided already exists
         user = User.query.filter_by(email=email).first()
         if user:
+
+            # if the user already exists, show an error message
             flash('Email already exists.', category='error')
 
         if len(email) < 4:
@@ -81,90 +95,42 @@ def sign_up():
 
 @auth.route('/actors/<int:actor_id>')
 def actor(actor_id):
+
+    # get the actor with the id provided
     actor = Actor.query.get(actor_id)
+
+    # get all the submissions for the actor with the id provided
     uploads = Submission.query.filter_by(actorid=actor_id).all()
+
     return render_template("actor.html", actor=actor, user=current_user, uploads=uploads, os=os)
 
 UPLOAD_FOLDER = 'static/images'
 
 @auth.route('/actors')
 def all_actors():
+
+    # get all the actors
     actors = Actor.query.all()
     return render_template('all_actors.html', user=current_user, actors=actors, os=os)
 
-@auth.route('/actors/new', methods=['GET', 'POST'])
-@login_required
-def new_actor():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        description = request.form.get('description')
-        image = request.files.get('image')
 
-        actor = Actor.query.filter_by(name=name).first()
-        if actor:
-            flash('Actor already exists.', category='error')
-        else:
-            # save image to static folder
-            filename = secure_filename(image.filename)
-            image_path = os.path.join(current_app.root_path, 'static/images', filename)
-            image.save(image_path)
-
-            # add actor to database
-            new_actor = Actor(name=name, description=description, image=filename)
-            db.session.add(new_actor)
-            db.session.commit()
-
-            flash('Actor created!', category='success')
-            return redirect(url_for('auth.actor', actor_id=new_actor.id))
-
-    return render_template("new_actor.html", user=current_user, os=os)
-
-@auth.route('/actors/<int:actor_id>/edit', methods=['GET', 'POST'])
-@login_required
-def edit_actor(actor_id):
-    actor = Actor.query.get(actor_id)
-    if request.method == 'POST':
-        actor.name = request.form.get('name')
-        actor.description = request.form.get('description')
-
-        # Check if a new image file was uploaded
-        if 'image' in request.files:
-            image = request.files['image']
-            if image.filename != '':
-                # Save image to the static folder
-                filename = secure_filename(image.filename)
-                image_path = os.path.join(current_app.root_path, 'static/images', filename)
-                image.save(image_path)
-                actor.image = filename
-
-        db.session.commit()
-        flash('Actor updated!', category='success')
-        return redirect(url_for('auth.actor', actor_id=actor.id))
-
-    return render_template("edit_actor.html", actor=actor, user=current_user)
-
-@auth.route('/actors/<int:actor_id>/delete', methods=['POST'])
-@login_required
-def delete_actor(actor_id):
-    actor = Actor.query.get(actor_id)
-    db.session.delete(actor)
-    db.session.commit()
-    flash('Actor deleted!', category='success')
-    return redirect(url_for('auth.all_actors', user=current_user))
 
 
 @auth.route('/upload_image', methods=['POST'])
 @login_required
 def upload_image():
+    # get the image from the form and save it in the static/images folder
     image_file = request.files.get('image')
     filename = secure_filename(image_file.filename)
     image_path = os.path.join(current_app.root_path, 'static', 'images', filename)
     image_file.save(image_path)
 
+    # run the prediction model on the image and get the prediction image and the actors found
     model_ai = FMA()
     prediction_image, actors_found = model_ai.predict(image_path)
     prediction_image = Image.fromarray(prediction_image)
-    actors_found = model_ai.predict(image_path)[1]
+
+    # save the prediction image in the static/images folder
     prediction_image_filename = filename.split(".")[0] + "_prediction." + filename.split(".")[1]
     prediction_image_path = os.path.join(current_app.root_path, 'static', 'images',
                                                       prediction_image_filename)
@@ -177,6 +143,8 @@ def upload_image():
     image_file_prediction.save(prediction_image_path)
 
     if len(actors_found) == 0:
+
+        # if no actors are found, show an error message
         flash('Actor not found!', category='error')
     else:
 
@@ -188,10 +156,12 @@ def upload_image():
 
                 if new_actor == actor_found.lower():
                     id_actor = Actor.query.filter_by(name=actor.name).first().id
+
+                    # add the submission to the database
+                    # a submission is an entry of an image uploaded by a user for an actor
                     new_submission = Submission(image=filename, actorid=id_actor)
                     db.session.add(new_submission)
                     db.session.commit()
-                    subm = Submission.query.filter_by(image=filename).first()
                     flash('Actor found!', category='success')
 
         return render_template("home.html", user=current_user, image_file=image_file_prediction, prediction= actors_found)
