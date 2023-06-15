@@ -17,7 +17,7 @@ from PIL import Image
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
 
@@ -26,7 +26,7 @@ def login():
         password = request.form.get('password')
 
         # check if the user with the email provided exists
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email = email).first()
         if user:
             if check_password_hash(user.password, password):
 
@@ -37,12 +37,12 @@ def login():
             else:
 
                 # if the password is incorrect, show an error message
-                flash('Incorrect password, try again.', category='error')
+                flash('Incorrect password, try again.', category = 'error')
         else:
 
             # if the user doesn't exist, show an error message
-            flash('Email does not exist.', category='error')
-    return render_template("login.html", user=current_user)
+            flash('Email does not exist.', category = 'error')
+    return render_template("login.html", user = current_user)
 
 
 @auth.route('/logout')
@@ -53,7 +53,7 @@ def logout():
     logout_user()
     return redirect (url_for('auth.login'))
 
-@auth.route('/sign-up', methods=['GET', 'POST'])
+@auth.route('/sign-up', methods = ['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
 
@@ -65,11 +65,11 @@ def sign_up():
         password2 = request.form.get('password2')
 
         # check if the user with the email provided already exists
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email = email).first()
         if user:
 
             # if the user already exists, show an error message
-            flash('Email already exists.', category='error')
+            flash('Email already exists.', category = 'error')
 
         if len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
@@ -83,7 +83,7 @@ def sign_up():
             flash('Password must be at least 7 characters.', category='error')
         else:
             # add user to database
-            new_user = User(email=email, first_name=first_name, last_name=last_name, password=generate_password_hash(password1, method='sha256'))
+            new_user = User(email = email, first_name = first_name, last_name = last_name, password = generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             flash('Account created!', category='success')
@@ -102,7 +102,7 @@ def actor(actor_id):
     # get all the submissions for the actor with the id provided
     uploads = Submission.query.filter_by(actorid=actor_id).all()
 
-    return render_template("actor.html", actor=actor, user=current_user, uploads=uploads, os=os)
+    return render_template("actor.html", actor = actor, user = current_user, uploads = uploads, os = os)
 
 UPLOAD_FOLDER = 'static/images'
 
@@ -148,22 +148,18 @@ def upload_image():
         flash('Actor not found!', category='error')
     else:
 
+
         for actor_found in set(actors_found):
-            all_actors = Actor.query.all()
-            for actor in all_actors:
+            # get the actor with the name provided
+            new_actor = Actor.query.filter(Actor.name.ilike(actor_found)).first()
 
-                new_actor = actor.name.lower()
+            if actor:
+                # add the submission to the database
+                new_submission = Submission(image=filename, actorid=new_actor.id)
+                db.session.add(new_submission)
+                db.session.commit()
+                flash('Actor found!', category='success')
 
-                if new_actor == actor_found.lower():
-                    id_actor = Actor.query.filter_by(name=actor.name).first().id
+        return render_template("home.html", user = current_user, image_file = image_file_prediction, prediction = actors_found)
 
-                    # add the submission to the database
-                    # a submission is an entry of an image uploaded by a user for an actor
-                    new_submission = Submission(image=filename, actorid=id_actor)
-                    db.session.add(new_submission)
-                    db.session.commit()
-                    flash('Actor found!', category='success')
-
-        return render_template("home.html", user=current_user, image_file=image_file_prediction, prediction= actors_found)
-
-    return render_template("home.html", user=current_user, image_file=image_file, prediction= None)
+    return render_template("home.html", user = current_user, image_file = image_file, prediction = None)
