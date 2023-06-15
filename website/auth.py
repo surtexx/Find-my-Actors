@@ -3,7 +3,6 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from .models import Actor
 from .models import Submission
-from .models import Note
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask import current_app
@@ -179,18 +178,22 @@ def upload_image():
 
     if len(actors_found) == 0:
         flash('Actor not found!', category='error')
-    for actor_found in set(actors_found):
-        all_actors = Actor.query.all()
-        for actor in all_actors:
+    else:
 
-            new_actor = actor.name.lower()
+        for actor_found in set(actors_found):
+            all_actors = Actor.query.all()
+            for actor in all_actors:
 
-            if new_actor == actor_found.lower():
-                id_actor = Actor.query.filter_by(name=actor.name).first().id
-                new_submission = Submission(image=filename, actorid=id_actor)
-                db.session.add(new_submission)
-                db.session.commit()
-                subm = Submission.query.filter_by(image=filename).first()
-                flash('Actor found!', category='success')
+                new_actor = actor.name.lower()
 
-    return render_template("home.html", user=current_user, image_file=image_file_prediction, prediction= actors_found)
+                if new_actor == actor_found.lower():
+                    id_actor = Actor.query.filter_by(name=actor.name).first().id
+                    new_submission = Submission(image=filename, actorid=id_actor)
+                    db.session.add(new_submission)
+                    db.session.commit()
+                    subm = Submission.query.filter_by(image=filename).first()
+                    flash('Actor found!', category='success')
+
+        return render_template("home.html", user=current_user, image_file=image_file_prediction, prediction= actors_found)
+
+    return render_template("home.html", user=current_user, image_file=image_file, prediction= None)
