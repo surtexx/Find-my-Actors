@@ -205,11 +205,13 @@ def upload_image():
 
                 date_time = datetime.datetime.now()
                 # if the actor found exists in the database, add the submission to the database
-                new_submission = Submission(image = filename, actorid = new_actor.id, userid = current_user.id, datetime = date_time)
-                db.session.add(new_submission)
-                db.session.commit()
-                flash('Actor found!', category='success')
+                if new_actor != None:
 
-        return render_template("home.html", user = current_user, image_file = image_file_prediction, prediction = actors_found)
+                    new_submission = Submission(image = filename, actorid = new_actor.id, userid = current_user.id, datetime = date_time)
+                    db.session.add(new_submission)
+                    db.session.commit()
+                    flash('Actor found!', category='success')
 
-    return render_template("home.html", user = current_user, image_file = image_file, prediction = None)
+        return render_template("home.html", user = current_user, image_file = image_file_prediction, predictions = actors_found)
+
+    return render_template("home.html", user = current_user, image_file = image_file, predictions = None)

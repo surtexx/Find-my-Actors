@@ -20,8 +20,13 @@
 {% extends "base.html" %}{% block title %}History{% endblock %}
 
 {% block content %}
-    
+
+    <br>
+    <h3>Your previous uploads: </h3>
+    <br>
     <div class="row">
+
+
         {% for actor in actors %}
             <div class="col-md-4">
                 <div class="card mb-4">
