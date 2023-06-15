@@ -2,6 +2,10 @@
 
 Find my Actors is a web application created for users to use it similarly to Shazam, but our app is specialized on detecting actors faces from pictures.
 
+## Demo
+
+A demo of our app can be seen [here](https://www.youtube.com/watch?v=9SnO9zdqwww).
+
 ## Team members
 
 - Gheorghe Robert-Mihai
@@ -52,4 +56,4 @@ We used the Modular Design pattern to ensure loading the main page for the type 
 
 ## 8. Using AI tools to develop the app
 
-We used GitHub Copilot to do simple tasks like iterating through an array of objects, to increase the speed of development and automate trivial tasks. ChatGPT also came handy in figuring out the correct order of some parameters in functions and in other situations that can pe seen [here](https://chat.openai.com/share/f7d0f025-d8bb-4056-b806-77891a07db0e)
+We used GitHub Copilot to do simple tasks like iterating through an array of objects, to increase the speed of development and automate trivial tasks. ChatGPT also came handy in figuring out the correct order of some parameters in functions and in other situations that can pe seen [here].(https://chat.openai.com/share/f7d0f025-d8bb-4056-b806-77891a07db0e)
