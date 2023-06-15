@@ -15,12 +15,11 @@ Find my Actors is a web application created for users to use it similarly to Sha
 02. As a user, I want view all the actors from the app.
 03. As a user, I want to upload a photo or a video with an actor.
 04. As a user, I want to view details about any actor.
-05. As an admin, I want to be able to add another actor to the website.
-06. As an admin, I want to edit or remove any actor from the database.
-07. As a user, I want to see the most searched actors in the website.
-08. As a user, I want to be able to search a specific actor by name.
-09. As a user, I want to see what actors the website recognized from my previous uploads.
-10. As a user, I want to see some of the results from other users uploads.
+05. As a user, I want to be able to log in or log out.
+06. As a user, I want to see the most searched actors in the website.
+07. As a user, I want to be able to search a specific actor by name.
+08. As a user, I want to see what actors the website recognized from my previous uploads.
+09. As a user, I want to see some of the results from other users uploads.
 
 ## 2. Diagrams
 
