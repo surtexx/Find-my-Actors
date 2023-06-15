@@ -7,8 +7,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     password = db.Column(db.String(150))
-    # add a column to store the user's profile picture
-    # add a column to store the user's profile picture
+
 
 
 class Actor(db.Model):
