@@ -1,6 +1,7 @@
 # Find my Actors
 
 Find my Actors is a web application created for users to use it similarly to Shazam, but our app is specialized on detecting actors faces from pictures.
+[Jira](https://mds-test.atlassian.net/jira/software/projects/FMA/boards/2)
 
 ## Demo
 
