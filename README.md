@@ -37,7 +37,10 @@ Bugs have been reported and fixed using pull requests. You can see them in the [
 
 ## 5. Refactoring and code standards
 
-TODO
+- Refactored code can be found here:
+  	1. We added comments and removed unnecessary code: [here](3716a4156b5c25c4f98cc4d752e8583f85f731f9).
+  	2. Simplified code: [here](e396b2b2c31759c86ffd9ce481c8c016b0b7c554).
+- Code follows PEP8 code style guide for Python(https://peps.python.org/pep-0008/).
 
 ## 6. Code comments
 
