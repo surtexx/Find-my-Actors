@@ -13,14 +13,14 @@ Find my Actors is a web application created for users to use it similarly to Sha
 
 01. As a user, I want to be able to create an account.
 02. As a user, I want view all the actors from the app.
-03. As a user, I want to upload a photo or a video with an actor.
+03. As a user, I want to upload a photo with an actor.
 04. As a user, I want to view details about any actor.
-05. As an admin, I want to be able to add another actor to the website.
-06. As an admin, I want to edit or remove any actor from the database.
-07. As a user, I want to see the most searched actors in the website.
-08. As a user, I want to be able to search a specific actor by name.
-09. As a user, I want to see what actors the website recognized from my previous uploads.
-10. As a user, I want to see some of the results from other users uploads.
+05. As a user, I want to be able to log in or log out.
+06. As a user, I want to see the most searched actors in the website.
+07. As a user, I want to be able to search a specific actor by name.
+08. As a user, I want to see what actors the website recognized from my previous uploads.
+09. As a user, I want to see some of the results from other users uploads.
+10. As a user, I want to be able to upload a photo with more actors in it and recognize all of them.
 
 ## 2. Diagrams
 
@@ -38,9 +38,9 @@ Bugs have been reported and fixed using pull requests. You can see them in the [
 ## 5. Refactoring and code standards
 
 - Refactored code can be found here:
-  	1. We added comments and removed unnecessary code: [here](3716a4156b5c25c4f98cc4d752e8583f85f731f9).
-  	2. Simplified code: [here](e396b2b2c31759c86ffd9ce481c8c016b0b7c554).
-- Code follows PEP8 code style guide for Python(https://peps.python.org/pep-0008/).
+  	1. We added comments and removed unnecessary code: [here](https://github.com/surtexx/Find-my-Actors/commit/3716a4156b5c25c4f98cc4d752e8583f85f731f9).
+  	2. Simplified code: [here](https://github.com/surtexx/Find-my-Actors/commit/3f48e1bb0766cebd314a01b10db05bbc4141b595).
+- Code follows [PEP8](https://peps.python.org/pep-0008/) code style guide for Python.
 
 ## 6. Code comments
 
