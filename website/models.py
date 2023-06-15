@@ -16,11 +16,16 @@ class Actor(db.Model):
     description = db.Column(db.String(500))
     image = db.Column(db.String(150))
 
+    def get_submission_count(self):
+        return Submission.query.filter(Submission.actorid == self.id).count()
+
+
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.String(150))
     actorid = db.Column(db.Integer, db.ForeignKey('actor.id'))
+    userid = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 

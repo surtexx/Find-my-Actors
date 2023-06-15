@@ -17,6 +17,32 @@ from PIL import Image
 auth = Blueprint('auth', __name__)
 
 
+
+@auth.route('/filter', methods=['GET'])
+def filter_actors():
+    query = request.args.get('query')
+    sort_asc = request.args.get('sort_asc')
+    sort_desc = request.args.get('sort_desc')
+    sort_submissions = request.args.get('sort_submissions')
+
+    actors = Actor.query
+
+    if query:
+        actors = actors.filter(Actor.name.ilike(f"%{query}%"))
+
+    if sort_asc:
+        actors = actors.order_by(Actor.name.asc())
+    elif sort_desc:
+        actors = actors.order_by(Actor.name.desc())
+    elif sort_submissions:
+        actors = actors.order_by(Actor.get_submission_count().desc())
+
+    actors = actors.all()
+
+    return render_template('all_actors.html', actors = actors, sort_asc = sort_asc, sort_desc = sort_desc,
+                           sort_submissions = sort_submissions, user = current_user, os = os)
+
+
 @auth.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -43,6 +69,14 @@ def login():
             # if the user doesn't exist, show an error message
             flash('Email does not exist.', category = 'error')
     return render_template("login.html", user = current_user)
+
+@auth.route('/history/<int:user_id>')
+@login_required
+def history(user_id):
+    # get all the submissions for the user with the id provided
+    uploads = Submission.query.filter_by(userid = user_id).all()
+    return render_template("history.html", user = current_user, uploads = uploads, os = os)
+
 
 
 @auth.route('/logout')
