@@ -1,5 +1,3 @@
-from sqlalchemy import desc
-
 from . import db
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
@@ -86,7 +84,12 @@ def login():
 def history(user_id):
     # get all the submissions for the user with the id provided
     uploads = Submission.query.filter_by(userid = user_id).all()
-    return render_template("history.html", user = current_user, uploads = uploads, os = os)
+    actor_ids = [upload.actorid for upload in uploads]
+    actors = Actor.query.filter(Actor.id.in_(actor_ids)).all()
+    actor_uploads = [(actor, [upload for upload in uploads if upload.actorid == actor.id]) for actor in actors]
+
+
+    return render_template("history.html", user = current_user, actors = actor_uploads, os = os)
 
 
 
@@ -200,8 +203,7 @@ def upload_image():
 
             if actor:
 
-                date_time = datetime.datetime.now().strftime('%d-%m-%y %H:%M')
-
+                date_time = datetime.datetime.now()
                 # if the actor found exists in the database, add the submission to the database
                 new_submission = Submission(image = filename, actorid = new_actor.id, userid = current_user.id, datetime = date_time)
                 db.session.add(new_submission)

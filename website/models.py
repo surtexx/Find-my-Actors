@@ -1,7 +1,6 @@
-import datetime
-
 from . import db
 from flask_login import UserMixin
+import datetime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +28,6 @@ class Submission(db.Model):
     actorid = db.Column(db.Integer, db.ForeignKey('actor.id'))
     userid = db.Column(db.Integer, db.ForeignKey('user.id'))
     datetime = db.Column(db.DateTime, default=datetime.datetime.now)
-
 
 
 

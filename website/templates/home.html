@@ -11,8 +11,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 70%; 
-        overflow-y: scroll;
+        height: 85%; 
+        overflow-y: auto;
     }
     
     .form-actions {
@@ -49,6 +49,12 @@
         text-align: center;
         margin: 20px;
     }
+    .predict-img {
+        max-width: 500px;
+        max-height: 500px;
+        width: auto;
+        height: auto;
+    }
 
 </style>
 
@@ -76,7 +82,9 @@
     </form>
     {% if image_file and prediction %}
         <div class="prediction">{{ prediction[0].title() }}</div>
-        <img src="{{ url_for('static', filename='images/' + image_file.filename) }}" class="card-img-top" alt="uploaded image">
+        <div class="predict-img">
+            <img src="{{ url_for('static', filename='images/' + image_file.filename) }}" class="card-img-top" alt="uploaded image">
+        </div>
     {% endif %}
      
     {% else %}

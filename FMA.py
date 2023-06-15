@@ -38,8 +38,8 @@ class FMA:
                 color = (240, 240, 240)
                 stroke = 4
                 #  adds the prediction text near the triangle with a stroke so it can be seen on every image, no matter the colors
-                cv2.putText(img, name, (left, top-10), font, 1, stroke_color, stroke, cv2.LINE_AA)
-                cv2.putText(img, name, (left, top-10), font, 1, color, 2, cv2.LINE_AA)
+                cv2.putText(img, name, (left, top-10), font, 0.4, stroke_color, stroke, cv2.LINE_AA)
+                cv2.putText(img, name, (left, top-10), font, 0.4, color, 1, cv2.LINE_AA)
             return cv2.resize(img, (360, 360)), names
         else:
             return None, []

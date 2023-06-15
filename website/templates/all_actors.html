@@ -1,7 +1,7 @@
 <style>
     .container {
-        height: 100%; /* set a fixed height to the container */
-        overflow-y: scroll; /* enable vertical scrolling */
+        height: 95%; /* set a fixed height to the container */
+        overflow-y: auto; /* enable vertical scrolling */
     }
     ::-webkit-scrollbar {
     width: 8px;
@@ -15,35 +15,76 @@
     .card{
         background-color: rgb(224, 224, 231);
     }
+    .form-inline{
+        margin-top: 20px;
+    }
+    .search-form {
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        width: 200px;
+        margin-right: 10px;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .checkbox-label {
+        margin-left: 5px;
+        font-size: 15px;
+    }
+
+    .apply-button {
+        margin-left: 10px;
+        font-size: 18px;
+    }
+    .apply-button {
+    margin-left: 10px;
+    font-size: 18px;
+    background-color: blue;
+    color: white;
+    }
+
+    .apply-button:not(:focus) {
+        background-color: rgb(35, 105, 255);
+        border-color: rgb(35, 105, 255);
+        color: white;
+    }
 </style>
 
 {% extends "base.html" %}{% block title %}Index{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12 mb-4">
-            <form class="form-inline" action="{{ url_for('auth.filter_actors') }}" method="GET">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search actor" aria-label="Search" name="query">
+    
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <form class="form-inline" action="{{ url_for('auth.filter_actors') }}" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search actor" aria-label="Search" name="query">
+            <div class="form-check mr-3">Sort by:</div>
+            <div class="form-check mr-3">
+                <label class="form-check-label" for="sortAscCheckbox">Ascending</label>
 
-                <div class="form-check mr-3">
-                    <input class="form-check-input" type="checkbox" id="sortAscCheckbox" name="sort_asc"
-                        {% if sort_asc %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
-                    <label class="form-check-label" for="sortAscCheckbox">Sort Ascending</label>
-                </div>
-                <div class="form-check mr-3">
-                    <input class="form-check-input" type="checkbox" id="sortDescCheckbox" name="sort_desc"
-                        {% if sort_desc %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
-                    <label class="form-check-label" for="sortDescCheckbox">Sort Descending</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="sortBySubmissionsCheckbox" name="sort_submissions"
-                        {% if sort_submissions %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
-                    <label class="form-check-label" for="sortBySubmissionsCheckbox">Sort by Submissions</label>
-                </div>
-                <button class="btn btn-outline-primary ml-3" type="submit">Apply changes</button>
-            </form>
-        </div>
+                <input class="form-check-input" type="checkbox" id="sortAscCheckbox" name="sort_asc"
+                    {% if sort_asc %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
+            </div>
+            <div class="form-check mr-3">
+                <label class="form-check-label" for="sortDescCheckbox">Descending</label>
+                <input class="form-check-input" type="checkbox" id="sortDescCheckbox" name="sort_desc"
+                    {% if sort_desc %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
+            </div>
+            <div class="form-check">
+                <label class="form-check-label" for="sortBySubmissionsCheckbox">Submissions</label>
+                <input class="form-check-input" type="checkbox" id="sortBySubmissionsCheckbox" name="sort_submissions"
+                    {% if sort_submissions %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
+            </div>
+            <button class="btn btn-outline-primary ml-3 apply-button" type="submit">Apply changes</button>
+        </form>
     </div>
+</div>
 
 
     <div class="row">
@@ -74,4 +115,3 @@
     }
 </script>
 {% endblock %}
-
