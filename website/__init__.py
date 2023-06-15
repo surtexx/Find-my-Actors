@@ -34,16 +34,7 @@ def create_app():
     def load_user(id):
         return User.query.get(int(id))
 
-    # admin = User(
-    #     email='admin@test.com',
-    #     first_name='Admin',
-    #     last_name='User',
-    #     password=generate_password_hash('Adminpa55word', method='sha256'),
-    #     is_admin=True
-    # )
 
-    # db.session.add(admin)
-    # db.session.commit()
     return app
 
 
