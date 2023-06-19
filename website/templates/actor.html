@@ -101,21 +101,23 @@
         <p class="actor-description">{{ actor.description }}</p>
       </div>
 
-      <h2>Last 10 pictures uploaded by other users:</h2>
-        <section id="image-carousel" class="splide" aria-label="Beautiful Images">
-          <div class="splide__track">
-            <ul class="splide__list">
-              {% for upload in uploads[:10] %}
-              <div class="splide__slide">
-                <img src="{{ url_for('static', filename='images/' + upload.image) }}" alt="Actor Image">
-              </div>
-              {% endfor %}
+        {% if uploads|length %}
+
+          <h2>Previous photos uploaded by others:</h2>
+            <section id="image-carousel" class="splide" aria-label="Beautiful Images">
+              <div class="splide__track">
+                <ul class="splide__list">
+                  {% for upload in uploads[-10:] %}
+                  <div class="splide__slide">
+                    <img src="{{ url_for('static', filename='uploads/' + upload.image) }}" alt="Actor Image">
+                  </div>
+                  {% endfor %}
                 </ul>
-          </div>
-        </section>
-      
-      
-      
+              </div>
+            </section>
+        {% else %}
+            <h2>No pictures uploaded yet</h2>
+        {% endif %}
     </div>
   </div>
 

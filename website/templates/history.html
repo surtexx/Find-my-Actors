@@ -22,36 +22,29 @@
 {% block content %}
 
     <br>
-    <h3>Your previous uploads: </h3>
-    <br>
-    <div class="row">
-
-
-        {% for actor in actors %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    {% if actor[0].image %}
-                    <img src="{{ url_for('static', filename='images/' + actor[0].image) }}" class="card-img-top" alt="{{ actor[0].name }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ actor[0].name }}</h5>
-                        <p class="card-text">Date Searched: {{ actor[1][0].datetime.strftime('%d-%m-%y %H:%M') }}</p>
-                        <a href="{{ url_for('auth.actor', actor_id=actor[0].id) }}" class="btn btn-primary">View actor</a>
+    {% if actors|length %}
+        <h3>Your previous uploads: </h3>
+        <br>
+        <div class="row">
+            {% for actor in actors %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        {% if actor[0].image %}
+                        <img src="{{ url_for('static', filename='images/' + actor[0].image) }}" class="card-img-top" alt="{{ actor[0].name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ actor[0].name }}</h5>
+                            <p class="card-text">Searched on: {{ actor[1][0].datetime.strftime('%d-%m-%y %H:%M') }}</p>
+                            <a href="{{ url_for('auth.actor', actor_id=actor[0].id) }}" class="btn btn-primary">View actor</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h3>You have no previous uploads</h3>
+    {% endif %}
 
-<script>
-    function uncheckOtherCheckboxes(checkbox) {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(function (cb) {
-            if (cb !== checkbox) {
-                cb.checked = false;
-            }
-        });
-    }
-</script>
+
 {% endblock %}
 

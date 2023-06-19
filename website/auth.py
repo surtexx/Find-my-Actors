@@ -170,7 +170,7 @@ def upload_image():
     # get the image from the form and save it in the static/images folder
     image_file = request.files.get('image')
     filename = secure_filename(image_file.filename)
-    image_path = os.path.join(current_app.root_path, 'static', 'images', filename)
+    image_path = os.path.join(current_app.root_path, 'static', 'uploads', filename)
     image_file.save(image_path)
 
     # run the prediction model on the image and get the prediction image and the actors found

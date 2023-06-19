@@ -66,18 +66,18 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search actor" aria-label="Search" name="query">
             <div class="form-check mr-3">Sort by:</div>
             <div class="form-check mr-3">
-                <label class="form-check-label" for="sortAscCheckbox">Ascending</label>
+                <label class="form-check-label" for="sortAscCheckbox">Name(A-Z)</label>
 
                 <input class="form-check-input" type="checkbox" id="sortAscCheckbox" name="sort_asc"
                     {% if sort_asc %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
             </div>
             <div class="form-check mr-3">
-                <label class="form-check-label" for="sortDescCheckbox">Descending</label>
+                <label class="form-check-label" for="sortDescCheckbox">Name(Z-A)</label>
                 <input class="form-check-input" type="checkbox" id="sortDescCheckbox" name="sort_desc"
                     {% if sort_desc %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
             </div>
             <div class="form-check">
-                <label class="form-check-label" for="sortBySubmissionsCheckbox">Submissions</label>
+                <label class="form-check-label" for="sortBySubmissionsCheckbox">Most Searched</label>
                 <input class="form-check-input" type="checkbox" id="sortBySubmissionsCheckbox" name="sort_submissions"
                     {% if sort_submissions %}checked{% endif %} onclick="uncheckOtherCheckboxes(this)">
             </div>

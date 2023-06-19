@@ -73,7 +73,7 @@
         <br>
         <h4>For using our app upload a photo with your favorite actor and find out who is in the picture.</h4>
         {% if user.is_authenticated %}
-        <h4>Hello {{ user.first_name }} {{user.last_name}}. Please upload the picture below</h4>
+        <h4>Hello {{ user.first_name }} {{user.last_name}}. Please upload the picture below.</h4>
 
         <form action="{{ url_for('auth.upload_image') }}" method="post" enctype="multipart/form-data">
             <div class="form-actions">
